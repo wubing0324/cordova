@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    
+    <title>my-project</title>
+    <script src="http://code.jquery.com/jquery-1.4.1.min.js"></script>
+    <script type="text/javascript">
+      function onLoad() {
+        $.ajax({
+          url: 'src/cordovaAndroid/cordova.js',
+          async:false,
+          dataType: "script",
+          success: function() {
+              alert("cordova")
+          }
+        });
+
+        $.ajax({
+          url: 'src/cordovaAndroid/cordova_plugins.js',
+          dataType: "script",
+          async:false,
+          success: function() {
+            //      alert("cordova_plugins")
+          }
+        });
+        document.addEventListener("deviceready", onDeviceReady, false);
+                
+      }
+ 
+            //Cordova加载完毕
+      function onDeviceReady() {
+        alert('deviceready')
+        //监听返回键按钮事件
+        document.addEventListener("backbutton", onBackKeyDown, false);
+      }
+      function cameraTakePicture() {
+         navigator.camera.getPicture(onSuccess, onFail, { 
+            quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL
+         });
+      
+         function onSuccess(imageData) {
+            var image = document.getElementById('myImage');
+            image.src = "data:image/jpeg;base64," + imageData
+         }
+      
+         function onFail(message) {
+            alert('Failed because: ' + message)
+         }
+      }
+ 
+      document.addEventListener("backbutton", onBackKeyDown, false);
+
+      function onBackKeyDown(e) {
+         e.preventDefault();
+         alert('Back Button is Pressed!');
+         cameraTakePicture()
+      }
+    </script>
+  </head>
+  <body onload="onLoad()">
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>
